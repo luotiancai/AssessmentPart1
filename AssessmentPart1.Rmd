@@ -6,8 +6,6 @@ output:
     df_print: paged
   html_notebook: default
   word_document: default
-  bibliography: 
- - AssessmentPart1.bib
 ---
 words account: 592
 
@@ -41,7 +39,6 @@ library(rgdal)
 library(rgeos)
 library(ggplot2)
 library(sp)
-library(citr)
 LondonData <- read_csv("https://files.datapress.com/london/dataset/ward-profiles-and-atlas/2015-09-24T14:21:24/ward-profiles-excel-version.csv", na = "n/a")
 LondonData <- data.frame(LondonData)
 LondonBoroughs <- LondonData[grep("^E09",LondonData[,3]),]
