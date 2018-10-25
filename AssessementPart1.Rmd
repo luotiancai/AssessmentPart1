@@ -1,12 +1,12 @@
 ---
 title: "A Comparison between Two maps produced Using GUI-based and Code-based Software"
+author: "Tianyu Luo"
 output:
+  html_document:
+    df_print: paged
   html_notebook: default
   word_document: default
-  
-author: Tianyu Luo
-bibliography: 
- - AssessmentPart1.bib
+bibliography: AssessmentPart1.bib
 ---
 The primitive tools used in the field of geographic mapping are mainly divided into two categories: the GUI-based software and code-based software (Strupler and Wilkinson, 2017). Both kinds of software can output exquisite maps through their effective algorithm and powerful cartographic ability. However, in some cases, due to the different characteristics of each software, some of them may perform relatively better effects. Therefore, based on these two maps the benefits and drawbacks of GUI vs Command line software will be mainly discussed in this essay.
 
