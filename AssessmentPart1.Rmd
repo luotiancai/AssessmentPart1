@@ -2,10 +2,12 @@
 title: "A Comparison between Two maps produced Using GUI-based and Code-based Software"
 author: "Tianyu Luo"
 output:
-  html_notebook: default
   html_document:
     df_print: paged
+  html_notebook: default
   word_document: default
+  bibliography: 
+ - AssessmentPart1.bib
 ---
 words account: 592
 
