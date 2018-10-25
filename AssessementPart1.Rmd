@@ -2,9 +2,9 @@
 title: "A Comparison between Two maps produced Using GUI-based and Code-based Software"
 author: "Tianyu Luo"
 output:
+  html_notebook: default
   html_document:
     df_print: paged
-  html_notebook: default
   word_document: default
 bibliography: AssessmentPart1.bib
 ---
@@ -14,6 +14,15 @@ Maps
 The theme of these two maps is about the average house price in London boroughs and the titles of them are clearly showed on the top of each. Both maps clearly present the distribution of average house price. The area around Kensington and Chelsea got the highest average house price while the price falls as distance increases. The information they present seems quite simple, but it is clear enough for readers to get a basic idea about how house prices are distributed among each London borough. Both maps divide the data into five classes, which is an appropriate number that can not only distinct the different categories but also keep the integrity of the map 
 
 ```{r message=TRUE}
+library(tidyverse)
+library(geojsonio)
+library(sf)
+library(tmap)
+library(tmaptools)
+library(ggmap)
+library(rgdal)
+library(rgeos)
+library(ggplot2)
 LondonData <- read_csv("https://files.datapress.com/london/dataset/ward-profiles-and-atlas/2015-09-24T14:21:24/ward-profiles-excel-version.csv", na = "n/a")
 LondonData <- data.frame(LondonData)
 LondonBoroughs <- LondonData[grep("^E09",LondonData[,3]),]
@@ -26,19 +35,11 @@ BoroughMapSP <- LondonMap
 BoroughMapSP <- as(BoroughMapSF, "Spatial")
 BoroughMapSP@data <- data.frame(BoroughMapSP@data,LondonData[match(BoroughMapSP@data[,"code"],LondonData[,"New.code"]),])
 BoroughDataMap <- append_data(BoroughMapSF,LondonData, key.shp = "code", key.data = "New.code", ignore.duplicates = TRUE)
-ggplot(data.frame, aes(x=x, y=y))
-geom_polygon(aes(x=x, y=y), data.frame)
 ggplot()+geom_sf(mapping = aes(geometry=geometry),data = BoroughDataMap)+theme_minimal()
 ggplot()+geom_sf(mapping = aes(geometry=geometry, fill=Median.House.Price...U.00A3.....2014),data = BoroughDataMap)+theme_minimal()
-palette1<-scale_fill_continuous(low="white", high="red", "Price(??)")
+palette1<-scale_fill_continuous(low="white", high="red", "Price(£)")
 labels<-labs(list(title="Average House Price 2014",x="Longitude", y="Latitude"))
 ggplot()+geom_sf(mapping = aes(geometry=geometry, fill=Median.House.Price...U.00A3.....2014),data = BoroughDataMap)+theme_minimal()+palette1+labels
-BoroughMapSFWGS84 <- st_transform(BoroughMapSF, 4326)
-BoroughDataMap <- append_data(BoroughMapSFWGS84,LondonData, key.shp = "code", key.data = "New.code", ignore.duplicates = TRUE)
-londonbbox1 <- c(left = -0.5103766, bottom = 51.28676, right = 0.3340146, top = 51.69187)
-londonbbox2 <- as.vector(st_bbox(BoroughMapSFWGS84))
-map <- get_stamenmap(londonbbox2, zoom = 10, maptype = "toner-lite")
-ggmap(map) + geom_sf(mapping = aes(geometry=geometry, fill=Median.House.Price...U.00A3.....2014),data = BoroughDataMap, inherit.aes = FALSE,alpha=0.7)+theme_minimal()+palette1+labels
 ```
 
 Though these two maps show us with similar information, there are still some differences between manifestations they express the information. The map produced by Arcgis contains more map elements, such as compass, scale and labels on each area. Through these elements, readers can get a better understanding of the geographic information compared to the other one. The map produced by R adds a base map under price layer. However, this information is too obscure that may have little help. However, with the red color it used, readers can feel much more visual impact and then form a deeper impression than the brown one.
